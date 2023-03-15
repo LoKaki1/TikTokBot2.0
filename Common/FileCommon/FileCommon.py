@@ -1,0 +1,11 @@
+import pathlib
+
+
+def write_file(path: str, message: str):
+    with open(path, 'a') as file:
+        file.write(f"\n{message}")
+
+
+def delete_file(path: str):
+    pathlib_path = pathlib.Path(path)
+    pathlib_path.unlink()

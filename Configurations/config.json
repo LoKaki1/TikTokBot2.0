@@ -1,0 +1,46 @@
+{
+  "RedditConfiguration": {
+    "ClientId": "8-LmKA6GPJkrC0RTSQ_5ww",
+    "ClientSecret": "U2wbIRUwbOlHAkBjJ0d2P_se6WKsLg",
+    "UserAgent": "LoKaki",
+    "CommentsPath": "./assets/comments/comment_{0}.png",
+    "CommentUrl": "https://reddit.com/{0}",
+    "CommentLocator": "#thing_t1_{0}",
+    "NumberOfComments": 6
+  },
+  "BackgroundConfiguration": {
+    "BackgroundType": {
+      "minecraft": "https://www.youtube.com/watch?v=n_Dv4JMiwK8"
+    },
+    "BackgroundFolder": "./assets/background/",
+    "BackgroundFormat": ".mp4",
+    "ChoppedVideoFolder": "./assets/videos",
+    "VideoLength": 6,
+    "WordLength": 6
+  },
+  "VoiceConfiguration": {
+    "VoiceType": "en_uk_001",
+    "OutputDir": "./assets/sound/",
+    "FileFormat": ".mp3",
+    "Headers":
+    {
+      "User-Agent": "com.zhiliaoapp.musically/2022600030 (Linux; U; Android 7.1.2; es_ES; SM-G988N; Build/NRD90M;tt-ok/3.12.13.1)",
+      "Cookie": "sessionid=0e275c6d08ba3e8b153deddc053b2f4b"
+    },
+    "Url": "https://api16-normal-c-useast1a.tiktokv.com/media/api/text/speech/invoke/"
+  },
+  "VideoConnectorConfiguration": {
+    "ResultPath": "./assets/result/{0}.mp4,",
+    "TmpPath": "./assets/temp/{0}.mp4",
+    "Width": 1080,
+    "Height": 1920,
+    "Fps": 60,
+    "AudioCodec": "aac",
+    "AudioBitrate": "192k",
+    "FadeIn": 0.1,
+    "FadeOut": 0.2
+  },
+  "ImagePullerConfiguration": {
+     "Timeout": 10000
+  }
+}
