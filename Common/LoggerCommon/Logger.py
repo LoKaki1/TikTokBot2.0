@@ -10,6 +10,15 @@ def log_info(message: str):
     print(message)
 
 
+def logger_info_decorator(function):
+    def wrapper(*args, **kwargs):
+        log_info(f"Function {function.__name__}: with arguments: {args, kwargs}")
+        result = function(*args, **kwargs)
+        log_info(f"Resulted: {result}")
+
+    return wrapper
+
+
 logger_types = {
     'info': log_info,
     'error': logging.error,
