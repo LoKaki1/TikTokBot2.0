@@ -1,8 +1,9 @@
+from typing import Any
+
+
 class IImageCreator:
 
-    def create_image(self, *args, **kwargs):
+    def create_images(self, comments: list[Any]):
         """
-        :param args:
-        :param kwargs:
         :return:
         """

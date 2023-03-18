@@ -16,7 +16,8 @@
     "BackgroundFormat": ".mp4",
     "ChoppedVideoFolder": "./assets/videos",
     "VideoLength": 6,
-    "WordLength": 6
+    "WordLength": 6,
+    "BackgroundResolution": "1080p"
   },
   "VoiceConfiguration": {
     "VoiceType": "en_uk_001",

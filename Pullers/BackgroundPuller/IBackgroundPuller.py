@@ -1,8 +1,8 @@
 class IBackgroundPuller:
 
-    def pull_background(self, *args, **kwargs) -> str:
+    def pull_background(self, video_name: str, video_length: int) -> str:
         """
-        :param args:
-        :param kwargs:
+        :param video_length:
+        :param video_name:
         :return:
         """

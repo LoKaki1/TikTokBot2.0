@@ -11,3 +11,4 @@ class BackgroundConfiguration:
     word_length: int
     background_format: str
     chopped_video_folder: str
+    background_resolution: str
