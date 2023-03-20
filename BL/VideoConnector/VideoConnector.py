@@ -31,13 +31,7 @@ class VideoConnector(IVideoConnector):
         """
         :return:
         """
-        image_voice_video = self.image_voice_connector.connect_image_voice(submission)
-        backgound = self.background_creator.create_background(
-            background,
-            int(image_voice_video.duration)
-        )
-
-        final = CompositeVideoClip([backgound, image_voice_video])
+        final = self._create_final_composite(submission, background)
         tmp_path = self.config.tmp_path.format(submission)
         final.write_videofile(
             tmp_path,
@@ -52,9 +46,23 @@ class VideoConnector(IVideoConnector):
         ffmpeg_extract_subclip(
             tmp_path,
             0,
-            image_voice_video.duration,
+            final.duration,
             targetname=final_video_path,
         )
+
+    def _create_final_composite(self,
+                                submission: str,
+                                background: str
+                                ):
+        image_voice_video = self.image_voice_connector.connect_image_voice(submission)
+        backgound = self.background_creator.create_background(
+            background,
+            int(image_voice_video.duration)
+        )
+
+        final = CompositeVideoClip([backgound, image_voice_video])
+
+        return final
 
 
 

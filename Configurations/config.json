@@ -6,7 +6,8 @@
     "CommentsPath": "./assets/comments/comment_{0}.png",
     "CommentUrl": "https://reddit.com/{0}",
     "CommentLocator": "#thing_t1_{0}",
-    "NumberOfComments": 6
+    "NumberOfComments": 6,
+    "StringNotInComments": ["http"]
   },
   "BackgroundConfiguration": {
     "BackgroundType": {

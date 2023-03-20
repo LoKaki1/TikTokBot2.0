@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+from typing import List
+
 from dataclasses_json import dataclass_json, LetterCase
 
 
@@ -12,3 +14,4 @@ class RedditConfiguration:
     comment_url: str
     comment_locator: str
     number_of_comments: int
+    string_not_in_comments: List[str]
