@@ -16,6 +16,8 @@ def logger_info_decorator(function):
         result = function(*args, **kwargs)
         log_info(f"Resulted: {result}")
 
+        return result
+
     return wrapper
 
 

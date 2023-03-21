@@ -19,7 +19,7 @@ class WebImagePuller(IImagePuller):
         :return:
         """
         with sync_playwright() as play_write:
-            browser = play_write.chromium.launch(headless=True)  # headless=False #to check for chrome view
+            browser = play_write.chromium.launch(headless=False)  # headless=False #to check for chrome view
             context = browser.new_context()
             page = context.new_page()
 

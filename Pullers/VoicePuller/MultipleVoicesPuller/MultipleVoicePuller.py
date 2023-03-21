@@ -43,7 +43,7 @@ class MultipleVoicePuller(IVoicePuller):
         voice_path = f"{self.config.output_dir}{video_name}"
 
         if not os.path.isdir(voice_path):
-            os.mkdir(voice_path)
+            os.makedirs(voice_path)
 
         filepaths = [
             self._create_voice_file_from_response(text,

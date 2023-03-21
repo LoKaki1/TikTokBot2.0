@@ -2,7 +2,8 @@ from typing import List, Union, Any
 
 from moviepy.audio.AudioClip import CompositeAudioClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
-from moviepy.video.VideoClip import ImageClip, VideoClip
+from moviepy.video.VideoClip import VideoClip
+from moviepy.editor import ImageClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.compositing.concatenate import concatenate_videoclips
 
