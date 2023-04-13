@@ -75,9 +75,11 @@ TTS_REQUEST: Dict[str, Union[int, str]] = {"speaker_map_type": 0, "aid": 1233}
 
 def get_audio_from_request(data):
     raw_voices = data["data"]["v_str"]
-    decoded_voices = base64.b64decode(raw_voices)
+    return decode_voice(raw_voices)
 
-    return decoded_voices
+
+def decode_voice(data: str):
+    return base64.b64decode(data)
 
 
 def create_request(text: str, voice: Any):

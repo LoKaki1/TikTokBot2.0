@@ -6,6 +6,7 @@
     "CommentsPath": "./assets/comments/comment_{0}.png",
     "CommentUrl": "https://reddit.com/{0}",
     "CommentLocator": "#thing_t1_{0}",
+    "TitleLocator": "#thing_t3_{0}",
     "NumberOfComments": 6,
     "StringNotInComments": ["http"]
   },
@@ -26,13 +27,12 @@
     "FileFormat": ".mp3",
     "Headers":
     {
-      "User-Agent": "com.zhiliaoapp.musically/2022600030 (Linux; U; Android 7.1.2; es_ES; SM-G988N; Build/NRD90M;tt-ok/3.12.13.1)",
-      "Cookie": "sessionid=0e275c6d08ba3e8b153deddc053b2f4b"
+      "xi-api-key": "97667acd3fb8308651c5204d04fb6d9c"
     },
-    "Url": "https://api16-normal-c-useast1a.tiktokv.com/media/api/text/speech/invoke/"
+    "Url": "https://api.elevenlabs.io/v1/text-to-speech/op5oR0juw3hsIL7ItNVO"
   },
   "VideoConnectorConfiguration": {
-    "ResultPath": "./assets/result/{0}.mp4,",
+    "ResultPath": "./assets/result/{0}.mp4",
     "TmpPath": "./assets/temp/{0}.mp4",
     "Width": 1080,
     "Height": 1920,
@@ -43,6 +43,6 @@
     "FadeOut": 0.2
   },
   "ImagePullerConfiguration": {
-     "Timeout": 10000
+     "Timeout": 100000
   }
 }

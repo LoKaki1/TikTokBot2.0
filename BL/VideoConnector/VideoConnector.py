@@ -54,19 +54,12 @@ class VideoConnector(IVideoConnector):
                                 submission: str,
                                 background: str
                                 ):
-        image_voice_video = self.image_voice_connector.connect_image_voice(submission)
-        backgound = self.background_creator.create_background(
+        image_voice_video, duration = self.image_voice_connector.connect_image_voice(submission)
+        background = self.background_creator.create_background(
             background,
-            int(image_voice_video.duration)
+            int(duration)
         )
 
-        final = CompositeVideoClip([backgound, image_voice_video])
+        final = CompositeVideoClip([background, image_voice_video])
 
         return final
-
-
-
-
-
-
-

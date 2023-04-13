@@ -1,6 +1,6 @@
 from typing import Any
 
-from praw.models import Submission
+from praw.models import Submission, MoreComments
 
 from Common.LoggerCommon.Logger import logger_info_decorator
 from Configurations.RedditConfiguration.RedditConfiguration import RedditConfiguration
@@ -28,11 +28,11 @@ class RedditCommentPuller(ICommentPuller):
 
                 if self._is_legit_comment(submission_comment):
                     current_submission_comments.append(submission_comment)
+            current_submission_comments.append(submission)
 
         return self.submissions_comments[submission.id]
 
     def _is_legit_comment(self, comment) -> bool:
-        return all([not_legit_string not in comment.body for not_legit_string in self.not_legit_comment_strings])
-
-
-
+        return all([not_legit_string not in comment.body for not_legit_string in self.not_legit_comment_strings]) \
+               and len(comment.body.split(' ')) <= 20 \
+               and len(comment.replies.list()) == 0

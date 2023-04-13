@@ -6,8 +6,8 @@ from Pullers.FrontContentPuller.MetaDataPuller.RedditPuller.ISubmissionPuller im
 
 class SubmissionPuller(ISubmissionPuller):
 
-    def __init__(self, reddit_parw: Reddit):
-        self.redit_praw = reddit_parw
+    def __init__(self, reddit_praw: Reddit):
+        self.redit_praw = reddit_praw
         self.submission = None
 
     def pull_submission(self, submission: str) -> Submission:

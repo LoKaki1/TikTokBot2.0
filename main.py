@@ -13,6 +13,7 @@ from Pullers.BackgroundPuller.VideoBackgroundPuller import VideoBackgroundPuller
 from Pullers.FrontContentPuller.ImagePuller.WebImagePuller import WebImagePuller
 from Pullers.FrontContentPuller.MetaDataPuller.CommentPuller.ReddictCommentPuller import RedditCommentPuller
 from Pullers.FrontContentPuller.MetaDataPuller.RedditPuller.SubmissionPuller import SubmissionPuller
+from Pullers.VoicePuller.CustomVoicePuller import CustomVoicePuller
 from Pullers.VoicePuller.MultipleVoicesPuller.MultipleVoicePuller import MultipleVoicePuller
 
 # Crating Configuration
@@ -43,7 +44,7 @@ background_puller = VideoBackgroundPuller(background_configuration)
 image_puller = WebImagePuller(image_puller_configuration)
 submission_puller = SubmissionPuller(reddit_praw)
 comment_puller = RedditCommentPuller(reddit_configuration)
-voice_puller = MultipleVoicePuller(voice_configuration)
+voice_puller = CustomVoicePuller(voice_configuration)
 
 # Creating Creators
 
@@ -57,5 +58,5 @@ voice_creator = VoiceCreator(voice_configuration, voice_puller)
 image_voice_connector = ImageVoiceConnector(video_connector_configuration, image_text_creator, voice_creator)
 video_connector = VideoConnector(video_connector_configuration, background_creator, image_voice_connector)
 
-video_connector.connect_video(submission="11wblds",
+video_connector.connect_video(submission="12klzj9",
                               background="minecraft")

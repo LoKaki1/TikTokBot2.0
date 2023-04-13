@@ -1,18 +1,14 @@
-from typing import List, Union, Any
+from typing import Union, Tuple
 
-from moviepy.audio.AudioClip import CompositeAudioClip
-from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.VideoClip import VideoClip
 from moviepy.editor import ImageClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.compositing.concatenate import concatenate_videoclips
 
 from BL.VideoConnector.ImageVoiceConnector.IImageVoiceConnector import IImageVoiceConnector
-from BL.VideoParts.FrontCreator.ImageCreator.IImageCreator import IImageCreator
 from BL.VideoParts.FrontCreator.ImageTextCreator.IImageTextCreator import IImageTextCreator
 from BL.VideoParts.VoiceCreator.IVoiceCreator import IVoiceCreator
 from Configurations.VideoConnectorConfiguration.VideoConnectorConfiguration import VideoConnectorConfiguration
-from Pullers.VoicePuller.IVoicePuller import IVoicePuller
 
 
 class ImageVoiceConnector(IImageVoiceConnector):
@@ -28,7 +24,7 @@ class ImageVoiceConnector(IImageVoiceConnector):
 
     def connect_image_voice(self,
                             submission: str,
-                            ) -> Union[VideoClip, CompositeVideoClip]:
+                            ) -> Tuple[Union[VideoClip, CompositeVideoClip], float]:
         images_texts = self.image_creator.create_image_text(submission)
 
         images = [image_text.path for image_text in images_texts]
@@ -49,4 +45,4 @@ class ImageVoiceConnector(IImageVoiceConnector):
 
         image_concat.audio = audio_composite
 
-        return image_concat
+        return image_concat, audio_composite.duration
