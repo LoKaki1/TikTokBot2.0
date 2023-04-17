@@ -11,6 +11,7 @@ class RedditConfiguration:
     client_secret: str
     user_agent: str
     comments_path: str
+    comment_path_format: str
     comment_url: str
     comment_locator: str
     title_locator: str

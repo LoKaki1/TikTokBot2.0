@@ -20,7 +20,8 @@ class RedditCommentPuller(ICommentPuller):
         """
         if submission.id not in self.submissions_comments:
             submission_comments = submission.comments.list()
-            self.submissions_comments[submission.id] = current_submission_comments = []
+            self.submissions_comments[submission.id] = current_submission_comments = [submission]
+            # This for putting the title like other comments
 
             for submission_comment in submission_comments:
                 if len(current_submission_comments) > self.config.number_of_comments:
@@ -28,7 +29,6 @@ class RedditCommentPuller(ICommentPuller):
 
                 if self._is_legit_comment(submission_comment):
                     current_submission_comments.append(submission_comment)
-            current_submission_comments.append(submission)
 
         return self.submissions_comments[submission.id]
 

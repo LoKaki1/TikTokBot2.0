@@ -1,3 +1,4 @@
+import os
 from os import path
 from random import randrange
 
@@ -29,6 +30,9 @@ class VideoBackgroundPuller(IBackgroundPuller):
     def _download_background(self, background: str) -> str:
         background_path = f"{self.config.background_folder}{background}{self.config.background_format}"
 
+        if not path.exists(self.config.background_folder):
+            os.makedirs(self.config.background_folder)
+
         if not path.exists(background_path):
             YouTube(self.config.background_type[background],
                     on_progress_callback=on_progress) \
@@ -47,6 +51,8 @@ class VideoBackgroundPuller(IBackgroundPuller):
         start_time, end_time = ((random_time := randrange(0, video_duration)), random_time + length)
 
         chopped_video_path = f'{self.config.chopped_video_folder}/{background_name}{self.config.background_format}'
+        if not path.exists(self.config.chopped_video_folder):
+            os.makedirs(self.config.chopped_video_folder)
 
         try:
             ffmpeg_extract_subclip(

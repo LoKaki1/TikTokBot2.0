@@ -14,3 +14,4 @@ class VideoConnectorConfiguration:
     audio_bitrate: str
     fade_in: float
     fade_out: float
+    file_format: str

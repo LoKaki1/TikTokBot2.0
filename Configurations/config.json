@@ -3,11 +3,12 @@
     "ClientId": "8-LmKA6GPJkrC0RTSQ_5ww",
     "ClientSecret": "U2wbIRUwbOlHAkBjJ0d2P_se6WKsLg",
     "UserAgent": "LoKaki",
-    "CommentsPath": "./assets/comments/comment_{0}.png",
+    "CommentsPath": "./assets/comments/",
+    "CommentPathFormat": "comment_{0}.png",
     "CommentUrl": "https://reddit.com/{0}",
     "CommentLocator": "#thing_t1_{0}",
     "TitleLocator": "#thing_t3_{0}",
-    "NumberOfComments": 6,
+    "NumberOfComments": 5,
     "StringNotInComments": ["http"]
   },
   "BackgroundConfiguration": {
@@ -32,8 +33,9 @@
     "Url": "https://api.elevenlabs.io/v1/text-to-speech/op5oR0juw3hsIL7ItNVO"
   },
   "VideoConnectorConfiguration": {
-    "ResultPath": "./assets/result/{0}.mp4",
-    "TmpPath": "./assets/temp/{0}.mp4",
+    "ResultPath": "./assets/result/",
+    "TmpPath": "./assets/temp/",
+    "FileFormat": ".mp4",
     "Width": 1080,
     "Height": 1920,
     "Fps": 60,

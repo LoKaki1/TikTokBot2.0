@@ -40,7 +40,7 @@ class ImageVoiceConnector(IImageVoiceConnector):
                         for image, audio_clip in zip(images, audio_clips)
                         ]
         image_concat = concatenate_videoclips(images_clips).set_position(
-            (0, self.config.height // 2)
+            (0, (self.config.height - images_clips[0].h) // 2 )
         )
 
         image_concat.audio = audio_composite

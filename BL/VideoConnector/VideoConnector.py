@@ -1,4 +1,5 @@
 import multiprocessing
+import os
 
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
@@ -32,7 +33,12 @@ class VideoConnector(IVideoConnector):
         :return:
         """
         final = self._create_final_composite(submission, background)
-        tmp_path = self.config.tmp_path.format(submission)
+
+        if not os.path.exists(self.config.tmp_path):
+            os.makedirs(self.config.tmp_path)
+
+        tmp_path = f"{self.config.tmp_path}{submission}{self.config.file_format}"
+
         final.write_videofile(
             tmp_path,
             fps=self.config.fps,
@@ -42,12 +48,17 @@ class VideoConnector(IVideoConnector):
             threads=multiprocessing.cpu_count()
         )
 
-        final_video_path = self.config.result_path.format(id(final))
+        if not os.path.exists(self.config.result_path):
+            os.makedirs(self.config.result_path)
+
+        final_video_path = f"{self.config.result_path}{submission}{self.config.file_format}"
+
         ffmpeg_extract_subclip(
             tmp_path,
             0,
             final.duration,
             targetname=final_video_path,
+
         )
 
     def _create_final_composite(self,
@@ -61,5 +72,6 @@ class VideoConnector(IVideoConnector):
         )
 
         final = CompositeVideoClip([background, image_voice_video])
+        final.duration = duration
 
         return final
