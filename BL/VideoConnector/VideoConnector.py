@@ -9,6 +9,7 @@ from BL.VideoConnector.ImageVoiceConnector.IImageVoiceConnector import IImageVoi
 from BL.VideoParts.BackgroundCreator.IBackgroundCreator import IBackgroundCreator
 from BL.VideoParts.FrontCreator.ImageTextCreator.IImageTextCreator import IImageTextCreator
 from BL.VideoParts.VoiceCreator.IVoiceCreator import IVoiceCreator
+from Common.FileCommon import FileCommon
 from Common.LoggerCommon.Logger import logger_info_decorator
 from Configurations.VideoConnectorConfiguration.VideoConnectorConfiguration import VideoConnectorConfiguration
 
@@ -34,9 +35,7 @@ class VideoConnector(IVideoConnector):
         """
         final = self._create_final_composite(submission, background)
 
-        if not os.path.exists(self.config.tmp_path):
-            os.makedirs(self.config.tmp_path)
-
+        FileCommon.save_dir(self.config.tmp_path)
         tmp_path = f"{self.config.tmp_path}{submission}{self.config.file_format}"
 
         final.write_videofile(
@@ -48,9 +47,8 @@ class VideoConnector(IVideoConnector):
             threads=multiprocessing.cpu_count()
         )
 
-        if not os.path.exists(self.config.result_path):
-            os.makedirs(self.config.result_path)
-
+        FileCommon.save_dir(self.config.result_path)
+        
         final_video_path = f"{self.config.result_path}{submission}{self.config.file_format}"
 
         ffmpeg_extract_subclip(

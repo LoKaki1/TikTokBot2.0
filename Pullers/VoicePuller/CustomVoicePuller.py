@@ -1,8 +1,6 @@
 import json
 import os
 from typing import List
-
-from Common.VoiceCommon import VoiceCommon
 from Configurations.VoiceConfiguration.VoiceConfiguration import VoiceConfiguration
 from Pullers.VoicePuller.IVoicePuller import IVoicePuller
 import requests

@@ -4,6 +4,7 @@ from praw.models import Submission
 from praw.reddit import Comment
 
 from Common.Factory.ImageWebPullerModelFactory.IImageWebPullerModelFactory import IImageWebPullerModelFactory
+from Common.FileCommon import FileCommon
 from Common.Models.ImageWebPullerModel import ImageWebPullerModel
 from Configurations.RedditConfiguration.RedditConfiguration import RedditConfiguration
 
@@ -22,8 +23,7 @@ class ImageWebPullerModelFactory(IImageWebPullerModelFactory):
     def create_image_web_model(self, comment) -> ImageWebPullerModel:
         comment_path = f"{self.reddit_config.comments_path}{self.reddit_config.comment_path_format.format(comment.id)}"
 
-        if not os.path.exists(self.reddit_config.comments_path):
-            os.makedirs(self.reddit_config.comments_path)
+        FileCommon.save_dir(self.reddit_config.comments_path)
 
         return ImageWebPullerModel(
             self.reddit_config.comment_url.format(comment.permalink),
