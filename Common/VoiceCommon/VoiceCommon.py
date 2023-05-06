@@ -1,6 +1,9 @@
 import base64
-from typing import Any, Final, Dict, Union
+from typing import Any, Final, Dict, Union, List, Tuple
 import re
+
+from moviepy.audio.AudioClip import concatenate_audioclips, CompositeAudioClip
+from moviepy.audio.io.AudioFileClip import AudioFileClip
 
 disney_voices: Final[tuple] = (
     "en_us_ghostface",  # Ghost Face
@@ -115,3 +118,15 @@ def sanitize_text(text: str) -> str:
 
     # remove extra whitespace
     return " ".join(result.split())
+
+
+def composite_voice_from_audio_files(audio_files: List[str]) -> Tuple[CompositeAudioClip, List[AudioFileClip]]:
+    audio_clips = [
+        AudioFileClip(file)
+        for file in audio_files
+    ]
+
+    audio_concat = concatenate_audioclips(audio_clips)
+    audio_composite = CompositeAudioClip([audio_concat])
+
+    return audio_composite, audio_clips

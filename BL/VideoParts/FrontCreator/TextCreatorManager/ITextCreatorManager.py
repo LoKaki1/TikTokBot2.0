@@ -1,11 +1,11 @@
 from typing import List
 
-from moviepy.video.VideoClip import TextClip
+from Common.Models.VoiceTextVideoModel import VoiceTextVideoModel
 
 
 class ITextCreatorManager:
 
-    def create_voice(self, path: str) -> List[TextClip]:
+    def create_voice(self, path: str) -> List[VoiceTextVideoModel]:
         """
         :param path:
         :return:

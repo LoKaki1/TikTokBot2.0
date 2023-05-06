@@ -5,6 +5,7 @@ from moviepy.audio.io.AudioFileClip import AudioFileClip
 
 from BL.VideoParts.VoiceCreator.IVoiceCreator import IVoiceCreator
 from Common.LoggerCommon.Logger import logger_info_decorator
+from Common.VoiceCommon import VoiceCommon
 from Configurations.VoiceConfiguration.VoiceConfiguration import VoiceConfiguration
 from Pullers.VoicePuller.IVoicePuller import IVoicePuller
 
@@ -27,13 +28,6 @@ class VoiceCreator(IVoiceCreator):
         :return:
         """
         audio_files = self.voice_puller.pull_voice(texts, self.voice, video_name)
-
-        audio_clips = [
-            AudioFileClip(file)
-            for file in audio_files
-        ]
-
-        audio_concat = concatenate_audioclips(audio_clips)
-        audio_composite = CompositeAudioClip([audio_concat])
+        (audio_composite, audio_clips) = VoiceCommon.composite_voice_from_audio_files(audio_files)
 
         return audio_composite, audio_clips
