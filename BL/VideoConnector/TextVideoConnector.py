@@ -50,8 +50,8 @@ class TextVideoConnector(IVideoConnector):
 
         final.write_videofile(
             tmp_path,
-            threads=5,
-            codec='h264_nvenc'
+            codec='h264_nvenc',
+
         )
 
         FileCommon.save_dir(self.config.result_path)
