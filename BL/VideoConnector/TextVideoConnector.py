@@ -41,6 +41,7 @@ class TextVideoConnector(IVideoConnector):
         )
 
         image_concat.audio = composite
+
         video_background = self.background_creator.create_background(background, video_length=int(composite.duration))
 
         final = CompositeVideoClip([video_background, image_concat])
@@ -51,7 +52,6 @@ class TextVideoConnector(IVideoConnector):
         final.write_videofile(
             tmp_path,
             codec='h264_nvenc',
-
         )
 
         FileCommon.save_dir(self.config.result_path)
