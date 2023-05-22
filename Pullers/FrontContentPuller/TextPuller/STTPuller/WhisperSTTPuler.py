@@ -10,7 +10,7 @@ class WhisperSTTPuller(ISTTPuller):
 
     @logger_info_decorator
     def pull_text_from_audio(self, path: str) -> List[STTModel]:
-        model = whisper.load_model("base", device='cuda')
+        model = whisper.load_model("base", device='cpu')
         result = model.transcribe(path, word_timestamps=True)
 
         segments = result['segments'][0:len(result['segments'])]
@@ -27,7 +27,7 @@ class WhisperSTTPuller(ISTTPuller):
                 new_words = words[index: index + 2]
                 (start, end) = new_words[0]['start'], new_words[-1]['end']
 
-                text = ''.join([new_word['word'] for new_word in new_words])
+                text = ' '.join([new_word['word'] for new_word in new_words])
                 stt_models.append(
                     STTModel(
                         text,
