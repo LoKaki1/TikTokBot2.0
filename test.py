@@ -16,4 +16,4 @@ for text in texts_pulled:
                            y=1080 / 2
                            )
 
-video.output(f'{id(video)}.mp4',  vcodec='h264_cuvid').run()
+video.output(f'{id(video)}.mp4',  vcodec='h264_nvenc').run()
