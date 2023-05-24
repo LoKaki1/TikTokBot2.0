@@ -1,7 +1,5 @@
 from typing import List
 
-from moviepy.video.VideoClip import TextClip
-
 from BL.VideoParts.FrontCreator.TextCreator.ITextCreator import ITextCreator
 from BL.VideoParts.FrontCreator.TextCreatorManager.ITextCreatorManager import ITextCreatorManager
 from Common.Models.VoiceTextVideoModel import VoiceTextVideoModel
@@ -18,6 +16,7 @@ class TextCreatorManager(ITextCreatorManager):
 
     def create_voice(self, path: str) -> List[VoiceTextVideoModel]:
         stt_models = self.stt_puller.pull_text_from_audio(path)
+
         text_clips = [VoiceTextVideoModel(self.text_creator.create_text(model.text, model.duration),
                                           model.start_time,
                                           model.end_time,

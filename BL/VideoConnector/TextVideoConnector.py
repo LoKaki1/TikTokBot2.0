@@ -1,9 +1,6 @@
-import multiprocessing
 
-import ffmpegcv
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.compositing.concatenate import concatenate_videoclips
-from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 
 from BL.VideoConnector.IVideoConnector import IVideoConnector
 from BL.VideoParts.BackgroundCreator.IBackgroundCreator import IBackgroundCreator
@@ -41,17 +38,15 @@ class TextVideoConnector(IVideoConnector):
         )
 
         image_concat.audio = composite
-        video_background = self.background_creator.create_background(background, video_length=int(composite.duration))
+        # video_background = self.background_creator.create_background(background, video_length=int(composite.duration))
 
-        final = CompositeVideoClip([video_background, image_concat])
+        final = CompositeVideoClip([image_concat])
 
         FileCommon.save_dir(self.config.tmp_path)
         tmp_path = f"{self.config.tmp_path}{id(voice)}{self.config.file_format}"
 
         final.write_videofile(
             tmp_path,
-            codec='h264_nvenc',
-
         )
 
         FileCommon.save_dir(self.config.result_path)
