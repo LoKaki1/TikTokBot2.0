@@ -2,6 +2,7 @@ from moviepy.video.io.VideoFileClip import VideoFileClip
 
 from BL.VideoParts.BackgroundCreator.IBackgroundCreator import IBackgroundCreator
 from Common.LoggerCommon.Logger import logger_info_decorator
+from Common.Models.BackgroundModel import BackgroundModel
 from Configurations.VideoConnectorConfiguration.VideoConnectorConfiguration import VideoConnectorConfiguration
 from Pullers.BackgroundPuller.IBackgroundPuller import IBackgroundPuller
 
@@ -16,7 +17,7 @@ class BackgroundCreator(IBackgroundCreator):
         self.config = config
 
     @logger_info_decorator
-    def create_background(self, background_name: str, video_length: int) -> VideoFileClip:
+    def create_background(self, background_name: str, video_length: int) -> BackgroundModel:
         """
         :return:
         """
@@ -33,4 +34,7 @@ class BackgroundCreator(IBackgroundCreator):
         x1 = c - half_w
         x2 = c + half_w
 
-        return clip.crop(x1=x1, y1=0, x2=x2, y2=self.config.height)
+        background_clip = clip.crop(x1=x1, y1=0, x2=x2, y2=self.config.height)
+        background_model = BackgroundModel(background_clip)
+
+        return background_model

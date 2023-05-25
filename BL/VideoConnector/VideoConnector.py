@@ -67,7 +67,7 @@ class VideoConnector(IVideoConnector):
         background = self.background_creator.create_background(
             background,
             int(duration)
-        )
+        ).background_data
 
         final = CompositeVideoClip([background, image_voice_video])
         final.duration = duration

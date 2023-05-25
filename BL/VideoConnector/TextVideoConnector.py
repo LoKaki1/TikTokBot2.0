@@ -41,7 +41,7 @@ class TextVideoConnector(IVideoConnector):
         )
 
         image_concat.audio = composite
-        video_background = self.background_creator.create_background(background, video_length=int(composite.duration))
+        video_background = self.background_creator.create_background(background, video_length=int(composite.duration)).background_data
 
         final = CompositeVideoClip([video_background, image_concat])
 

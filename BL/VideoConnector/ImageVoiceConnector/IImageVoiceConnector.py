@@ -1,4 +1,4 @@
-from typing import List, Union, Tuple
+from typing import List, Union, Tuple, Any
 
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.VideoClip import VideoClip
@@ -10,7 +10,7 @@ class IImageVoiceConnector:
     def connect_image_voice(self,
                             submission: str,
                             ) \
-            -> Tuple[Union[VideoClip, CompositeVideoClip], float]:
+            -> Tuple[Union[Union[VideoClip, CompositeVideoClip], Any], float]:
         """
         :return:
         """
