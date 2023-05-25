@@ -1,6 +1,5 @@
 from typing import List
 
-from moviepy.video.VideoClip import TextClip
 
 from BL.VideoParts.FrontCreator.TextCreator.ITextCreator import ITextCreator
 from BL.VideoParts.FrontCreator.TextCreatorManager.ITextCreatorManager import ITextCreatorManager

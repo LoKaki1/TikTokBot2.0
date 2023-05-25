@@ -6,3 +6,9 @@ class IBackgroundPuller:
         :param video_name:
         :return:
         """
+
+    def get_video_meta_data(self, video: str):
+        """
+        :param video:
+        :return:
+        """

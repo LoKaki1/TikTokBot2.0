@@ -16,6 +16,7 @@ class VideoBackgroundPuller(IBackgroundPuller):
 
     def __init__(self, config: BackgroundConfiguration):
         self.config = config
+        self.meta_data = {}
 
     @logger_info_decorator
     def pull_background(self, video_name: str, video_length: int = None) -> str:
@@ -26,6 +27,9 @@ class VideoBackgroundPuller(IBackgroundPuller):
         chopped_video = self._chop_background_video(background_video_path, video_name, video_length)
 
         return chopped_video
+
+    def get_video_meta_data(self, video: str):
+        return self.meta_data[video]
 
     def _download_background(self, background: str) -> str:
         background_path = f"{self.config.background_folder}{background}{self.config.background_format}"
@@ -46,7 +50,9 @@ class VideoBackgroundPuller(IBackgroundPuller):
                                background_name: str,
                                length: int = None
                                ) -> str:
-        video_duration = int(VideoFileClip(background_path).duration)
+        video_meta_data = VideoFileClip(background_path)
+
+        video_duration = int(video_meta_data.duration)
         start_time, end_time = RegularCommon.generate_video_start_end(video_duration, length)
 
         chopped_video_path = f'{self.config.chopped_video_folder}/{background_name}{self.config.background_format}'
@@ -67,5 +73,7 @@ class VideoBackgroundPuller(IBackgroundPuller):
             with VideoFileClip(background_path) as video:
                 new = video.subclip(start_time, end_time)
                 new.write_videofile(chopped_video_path)
+
+        self.meta_data[background_name] = video_meta_data
 
         return chopped_video_path
