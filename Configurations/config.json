@@ -14,7 +14,8 @@
   "BackgroundConfiguration": {
     "BackgroundType": {
       "minecraft": "https://www.youtube.com/watch?v=n_Dv4JMiwK8",
-      "short": "https://www.youtube.com/shorts/QGV_60Fr5_8"
+      "short": "https://www.youtube.com/shorts/QGV_60Fr5_8",
+      "andrewTate":  "https://www.youtube.com/watch?v=BX1WpL2VlhM"
     },
     "BackgroundFolder": "./assets/background/",
     "BackgroundFormat": ".mp4",
