@@ -1,3 +1,4 @@
+import time
 from typing import List
 
 from playwright.sync_api import Page, sync_playwright
@@ -34,6 +35,16 @@ class WebImagePuller(IImagePuller):
                              path_to_save: str,
                              page: Page) -> str:
         page.goto(page_link, timeout=self.config.timeout)
-        page.locator(xpath).screenshot(path=path_to_save)
+        zoom = 1.4
+        page.evaluate(f"document.body.style.zoom={zoom}")
+        locator = page.locator(xpath)
+        locator.scroll_into_view_if_needed()
+        location = locator.bounding_box()
+        page.eval_on_selector(f"//div[@class='side']", "el => el.setAttribute('style','display:none')")
+
+        for i in location:
+            location[i] = float("{:.2f}".format(location[i] * zoom))
+
+        page.screenshot(clip=location, path=path_to_save)
 
         return path_to_save

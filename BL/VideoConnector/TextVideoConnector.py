@@ -1,9 +1,6 @@
-import multiprocessing
 
-import ffmpegcv
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.compositing.concatenate import concatenate_videoclips
-from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 
 from BL.VideoConnector.IVideoConnector import IVideoConnector
 from BL.VideoParts.BackgroundCreator.IBackgroundCreator import IBackgroundCreator

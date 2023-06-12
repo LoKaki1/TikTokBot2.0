@@ -27,12 +27,12 @@
   "VoiceConfiguration": {
     "VoiceType": "en_uk_001",
     "OutputDir": "./assets/sound/",
-    "FileFormat": ".mp3",
+    "FileFormat": ".wav",
     "Headers":
     {
-      "xi-api-key": "97667acd3fb8308651c5204d04fb6d9c"
+      "xi-api-key": "b34ec60a53917818c192ba70796efe00"
     },
-    "Url": "https://api.elevenlabs.io/v1/text-to-speech/op5oR0juw3hsIL7ItNVO"
+    "Url": "https://api.elevenlabs.io/v1/text-to-speech/pNInz6obpgDQGcFmaJgB"
   },
   "VideoConnectorConfiguration": {
     "ResultPath": "./assets/result/",

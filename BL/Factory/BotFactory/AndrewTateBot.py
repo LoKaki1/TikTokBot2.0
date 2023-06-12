@@ -6,7 +6,6 @@ from BL.VideoParts.FrontCreator.TextCreator.TextCreator import TextCreator
 from BL.VideoParts.FrontCreator.TextCreatorManager.TextCreatorManager import TextCreatorManager
 from Configurations.Configuration import Configuration
 from Pullers.BackgroundPuller.VideoBackgroundPuller import VideoBackgroundPuller
-from Pullers.FrontContentPuller.TextPuller.STTPuller.STTPuller import STTPuller
 from Pullers.FrontContentPuller.TextPuller.STTPuller.WhisperSTTPuler import WhisperSTTPuller
 
 

@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Union, Any
 
+
 @dataclass
 class VoiceModel:
     composite: Any  #

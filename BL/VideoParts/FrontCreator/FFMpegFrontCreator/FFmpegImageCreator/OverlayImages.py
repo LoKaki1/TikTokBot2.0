@@ -1,10 +1,12 @@
 from typing import Union, Tuple
 
+import ffmpeg
 from moviepy.video.VideoClip import VideoClip
 from moviepy.editor import ImageClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.compositing.concatenate import concatenate_videoclips
 
+from BL.Factory.MetadataFactory.ImageTextFactory import ImageTextFactory
 from BL.VideoConnector.ImageVoiceConnector.IImageVoiceConnector import IImageVoiceConnector
 from BL.VideoParts.FrontCreator.ImageTextCreator.IImageTextCreator import IImageTextCreator
 from BL.VideoParts.VoiceCreator.IVoiceCreator import IVoiceCreator
@@ -16,8 +18,10 @@ class OverlayImages(IImageVoiceConnector):
     def __init__(self,
                  config: VideoConnectorConfiguration,
                  image_creator: IImageTextCreator,
-                 voice_creator: IVoiceCreator
+                 voice_creator: IVoiceCreator,
+                 image_text_factory: ImageTextFactory
                  ):
+        self.image_text_factory = image_text_factory
         self.image_creator = image_creator
         self.voice_creator = voice_creator
         self.config = config
@@ -26,10 +30,7 @@ class OverlayImages(IImageVoiceConnector):
                             submission: str,
                             ffmpeg_base=None
                             ):
-        images_texts = self.image_creator.create_image_text(submission)
-
-        images = [image_text.path for image_text in images_texts]
-        texts = [image_text.text for image_text in images_texts]
+        [images, texts] = self.image_text_factory.create_images_text(submission)
 
         (audio_composite, audio_clips) = self.voice_creator.create_voice(texts, submission)
 
@@ -38,10 +39,10 @@ class OverlayImages(IImageVoiceConnector):
         for overlay, audio_clip in zip(images, audio_clips):
             start_time = end_time
             end_time += audio_clip.duration
-            ffmpeg_base = ffmpeg_base.overlay(overlay,
+            ffmpeg_base = ffmpeg_base.overlay(ffmpeg.input(overlay),
                                               enable=f'between(t, {start_time}, {end_time})',
-                                              x=40,
-                                              y=1080 / 2
+                                              x='(main_w-overlay_w)/2', y='(main_h-overlay_h)/2',
+                                              **{"[1:v]scale": f"{self.config.width - 60}:-1 [ovrl]"}
                                               )
 
         return ffmpeg_base, audio_composite.duration

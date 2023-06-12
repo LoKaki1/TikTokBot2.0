@@ -1,16 +1,9 @@
-import multiprocessing
 
 import ffmpeg
-import ffmpegcv
-from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
-from moviepy.video.compositing.concatenate import concatenate_videoclips
-from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 
 from BL.VideoConnector.IVideoConnector import IVideoConnector
 from BL.VideoParts.BackgroundCreator.IBackgroundCreator import IBackgroundCreator
 from BL.VideoParts.FrontCreator.FFMpegFrontCreator.FFMpegTextCreator.DrawTextCreator import DrawTextCreator
-from BL.VideoParts.FrontCreator.TextCreatorManager.ITextCreatorManager import ITextCreatorManager
-from Common.FileCommon import FileCommon
 from Common.VoiceCommon import VoiceCommon
 from Configurations.VideoConnectorConfiguration.VideoConnectorConfiguration import VideoConnectorConfiguration
 from Pullers.BackgroundPuller.IBackgroundPuller import IBackgroundPuller
@@ -38,7 +31,7 @@ class FFmpegVideoConnector(IVideoConnector):
         result_path = f"{self.config.result_path}{id(voice)}{self.config.file_format}"
         ffmpeg_result = ffmpeg.concat(ffmpeg_base, audio, v=1, a=1)
 
-        return ffmpeg_result.output(result_path, vcodec='h264_nvenc').run()
+        return ffmpeg_result.output(result_path).run()
         # images_clips = [stt_model.text_clip.set_duration(stt_model.end_time - stt_model.start_time
         #                                          ).resize(width=int(self.config.width)
         #                                                   )
