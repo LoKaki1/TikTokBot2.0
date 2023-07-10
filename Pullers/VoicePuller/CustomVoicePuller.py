@@ -27,7 +27,10 @@ class CustomVoicePuller(IVoicePuller):
                                          text: str,
                                          voice: str,
                                          filepath: str
+
                                          ):
+        filepath = filepath.replace('"', '').replace('\\', '')
+
         if isfile(filepath):
             return filepath
 

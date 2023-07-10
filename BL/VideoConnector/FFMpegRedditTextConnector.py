@@ -1,5 +1,5 @@
 import ffmpeg
-from moviepy.audio.AudioClip import concatenate_audioclips
+from moviepy.audio.AudioClip import concatenate_audioclips, CompositeAudioClip
 
 from BL.Factory.MetadataFactory.ImageTextFactory import ImageTextFactory
 from BL.VideoConnector.IVideoConnector import IVideoConnector
@@ -12,6 +12,7 @@ from Common.Factory.STTModelFactory.ISTTModelFactory import ISTTModelFactory
 from Common.Models.STTModel import STTModel
 from Configurations.VideoConnectorConfiguration.VideoConnectorConfiguration import VideoConnectorConfiguration
 from Configurations.VoiceConfiguration.VoiceConfiguration import VoiceConfiguration
+from Pullers.FrontContentPuller.TextPuller.STTPuller.ISTTPuller import ISTTPuller
 from Pullers.VoicePuller.IVoicePuller import IVoicePuller
 
 
@@ -26,7 +27,8 @@ class FFMpegRedditTextConnector(IVideoConnector):
                  voice_puller: IVoicePuller,
                  voice_configuration: VoiceConfiguration,
                  draw_text: IDrawText,
-                 stt_model_factory: ISTTModelFactory):
+                 stt_model_factory: ISTTModelFactory,
+                 stt_puller: ISTTPuller):
         self.stt_model_factory = stt_model_factory
         self.voice_configuration = voice_configuration
         self.voice_puller = voice_puller
@@ -36,21 +38,33 @@ class FFMpegRedditTextConnector(IVideoConnector):
         self.config = video_connector_config
         self.background_creator = background_creator
         self.draw_text = draw_text
+        self.stt_puller = stt_puller
 
     def connect_video(self, *args, **kwargs):
         background_name = kwargs['background']
         submission = kwargs['submission']
         [_, texts] = self.image_text_factory.create_images_text(submission, 2)
         voices = self.voice_creator.create_voice(texts, background_name)
-        text_models = self.stt_model_factory.create_model_factory(texts, voices[1])
-        text_models.pop(0)
+        # text_models = self.stt_model_factory.create_model_factory(texts, voices[1])
+        # text_models.pop(0)
+
         audio_concat = concatenate_audioclips(voices[1])
 
         audio_concat.write_audiofile((path := f"{self.voice_configuration.output_dir}{id(voices)}.wav"))
+        only_comments = voices[1].copy()
+        only_comments.pop(0)
+        audio_concat = concatenate_audioclips(only_comments)
+
+        audio_concat.write_audiofile((stt_reader := f"{self.voice_configuration.output_dir}{id(audio_concat)}.wav"))
+
+        text_models = self.stt_puller.pull_text_from_audio(stt_reader)
+        texts_data = [text.text for text in text_models]
+        text_models_all = self.stt_puller.pull_text_from_audio(path)
+        text_models = [text_model for text_model in text_models_all if text_model.text in texts_data]
         ffmpeg_base = self.background_creator.create_background(background_name, voices[0].duration).background_data
         result_path = f"{self.config.result_path}{id(voices)}{self.config.file_format}"
         ffmpeg_base_images = self.overlay_images.connect_image_voice(submission, 0, ffmpeg_base)[0]
         ffmpeg_base_images = self.draw_text.draw_text(text_models, ffmpeg_base_images)
         ffmpeg_base_images = ffmpeg.concat(ffmpeg_base_images, ffmpeg.input(path), v=1, a=1)
 
-        return ffmpeg_base_images.output(result_path,).run()
+        return ffmpeg_base_images.output(result_path,  vcodec='h264_nvenc').run()
