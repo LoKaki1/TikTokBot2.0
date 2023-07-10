@@ -28,9 +28,10 @@ class OverlayImages(IImageVoiceConnector):
 
     def connect_image_voice(self,
                             submission: str,
+                            number: int = None,
                             ffmpeg_base=None
                             ):
-        [images, texts] = self.image_text_factory.create_images_text(submission)
+        [images, texts] = self.image_text_factory.create_images_text(submission, number)
 
         (audio_composite, audio_clips) = self.voice_creator.create_voice(texts, submission)
 
@@ -41,8 +42,8 @@ class OverlayImages(IImageVoiceConnector):
             end_time += audio_clip.duration
             ffmpeg_base = ffmpeg_base.overlay(ffmpeg.input(overlay),
                                               enable=f'between(t, {start_time}, {end_time})',
-                                              x='(main_w-overlay_w)/2', y='(main_h-overlay_h)/2',
-                                              **{"[1:v]scale": f"{self.config.width - 60}:-1 [ovrl]"}
+                                              x='(main_w-overlay_w)/2 ', y='(main_h-overlay_h)/2',
+                                              **{"[1:v]scale": f"{self.config.width}:-1 [ovrl]"}
                                               )
 
         return ffmpeg_base, audio_composite.duration

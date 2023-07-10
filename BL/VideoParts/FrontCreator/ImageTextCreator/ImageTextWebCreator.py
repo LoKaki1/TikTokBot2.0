@@ -24,12 +24,12 @@ class ImageTextWebCreator(IImageTextCreator):
         }
 
     @logger_info_decorator
-    def create_image_text(self, submission: str) -> list[ImageTextModel]:
+    def create_image_text(self, submission: str, number: int = None) -> list[ImageTextModel]:
         """
         :return:
         """
         submission = self.submission_puller.pull_submission(submission)
-        comments = self.comment_puller.pull_comments(submission)
+        comments = self.comment_puller.pull_comments(submission, number)
         images_path = self.image_creator.create_images(comments)
 
         image_text_model = [

@@ -35,16 +35,16 @@ class WebImagePuller(IImagePuller):
                              path_to_save: str,
                              page: Page) -> str:
         page.goto(page_link, timeout=self.config.timeout)
-        zoom = 1.4
-        page.evaluate(f"document.body.style.zoom={zoom}")
+        # zoom = 1.4
+        # page.evaluate(f"document.body.style.zoom={zoom}")
         locator = page.locator(xpath)
+
+        page.eval_on_selector('(//div[@class="usertext-body may-blank-within md-container "])[2]', "el => el.setAttribute('style', 'font-size: 40px')")
+        page.eval_on_selector(f"//div[@class='side']", "el => el.setAttribute('style','display:none')")
         locator.scroll_into_view_if_needed()
         location = locator.bounding_box()
-        page.eval_on_selector(f"//div[@class='side']", "el => el.setAttribute('style','display:none')")
-
-        for i in location:
-            location[i] = float("{:.2f}".format(location[i] * zoom))
-
+        # for i in location:
+        #     location[i] = float("{:.2f}".format(location[i] * zoom))
         page.screenshot(clip=location, path=path_to_save)
 
         return path_to_save

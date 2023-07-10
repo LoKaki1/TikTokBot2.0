@@ -7,9 +7,9 @@ class ImageTextFactory:
         self.image_creator = image_creator
         self.submission_to_data = {}
 
-    def create_images_text(self, submission: str):
-        if submission not in self.submission_to_data:
-            images_texts = self.image_creator.create_image_text(submission)
+    def create_images_text(self, submission: str, number: int = None) -> list[list[str], list[str]]:
+        if submission not in self.submission_to_data or len(self.submission_to_data[submission]) != number:
+            images_texts = self.image_creator.create_image_text(submission, number)
 
             images, texts = [], []
 

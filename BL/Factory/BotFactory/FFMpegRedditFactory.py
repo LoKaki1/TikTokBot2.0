@@ -2,14 +2,17 @@ from praw import Reddit
 
 from BL.Factory.BotFactory.BotFactoryBase import BotFactoryBase
 from BL.Factory.MetadataFactory.ImageTextFactory import ImageTextFactory
+from BL.VideoConnector.FFMpegRedditTextConnector import FFMpegRedditTextConnector
 from BL.VideoConnector.FFmpegRedditVideoConnector import FFmpegRedditVideoConnector
 from BL.VideoConnector.IVideoConnector import IVideoConnector
 from BL.VideoParts.BackgroundCreator.FFmpegBackgroundCreator import FFmpegBackgroundCreator
+from BL.VideoParts.FrontCreator.FFMpegFrontCreator.FFMpegTextCreator.DrawText.DrawText import DrawText
 from BL.VideoParts.FrontCreator.FFMpegFrontCreator.FFmpegImageCreator.OverlayImages import OverlayImages
 from BL.VideoParts.FrontCreator.ImageCreator.CommentImageCreator import CommentImageCreator
 from BL.VideoParts.FrontCreator.ImageTextCreator.ImageTextWebCreator import ImageTextWebCreator
 from BL.VideoParts.VoiceCreator.VoiceCreator import VoiceCreator
 from Common.Factory.ImageWebPullerModelFactory.ImageWebPullerModelFactory import ImageWebPullerModelFactory
+from Common.Factory.STTModelFactory.STTModelFactory import STTModelFactory
 from Pullers.BackgroundPuller.VideoBackgroundPuller import VideoBackgroundPuller
 from Pullers.FrontContentPuller.ImagePuller.WebImagePuller import WebImagePuller
 from Pullers.FrontContentPuller.MetaDataPuller.CommentPuller.ReddictCommentPuller import RedditCommentPuller
@@ -36,7 +39,7 @@ class FFmpegRedditFactory(BotFactoryBase):
         background_puller = VideoBackgroundPuller(self.background_configuration)
         image_puller = WebImagePuller(self.image_puller_configuration)
         submission_puller = SubmissionPuller(reddit_praw)
-        comment_puller = RedditCommentPuller(self.reddit_configuration)
+        comment_puller = RedditCommentPuller(self.reddit_configuration, 0)
         voice_puller = CustomVoicePuller(self.voice_configuration)
 
         # Creating Creators
@@ -50,5 +53,16 @@ class FFmpegRedditFactory(BotFactoryBase):
                                        image_text_creator,
                                        voice_creator,
                                        image_text_factory)
+        draw_text = DrawText()
+        stt_model_factory = STTModelFactory()
 
-        return FFmpegRedditVideoConnector(background_creator, self.video_connector_configuration, voice_creator,overlay_images, image_text_factory, voice_puller, self.voice_configuration)
+        return FFMpegRedditTextConnector(background_creator,
+                                         self.video_connector_configuration,
+                                         voice_creator,
+                                         overlay_images,
+                                         image_text_factory,
+                                         voice_puller,
+                                         self.voice_configuration,
+                                         draw_text,
+                                         stt_model_factory
+                                         )

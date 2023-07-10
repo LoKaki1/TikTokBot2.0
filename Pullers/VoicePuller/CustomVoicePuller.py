@@ -1,5 +1,6 @@
 import json
 import os
+from os.path import isfile
 from typing import List
 
 from Common.LoggerCommon.Logger import log_info
@@ -27,6 +28,9 @@ class CustomVoicePuller(IVoicePuller):
                                          voice: str,
                                          filepath: str
                                          ):
+        if isfile(filepath):
+            return filepath
+
         self.payload['text'] = text
         result = requests.post(self.config.url,
                                data=json.dumps(self.payload),
@@ -40,22 +44,21 @@ class CustomVoicePuller(IVoicePuller):
         return filepath
 
     def pull_voice(self, texts: List[str], voice: str, video_name: str = None) -> List[str]:
-        if (cache_name := id(texts)) not in self.cache:
-            video_name = id(texts) if video_name is None else video_name
-            voice_path = f"{self.config.output_dir}{video_name}"
+        # if (cache_name := id(texts)) not in self.cache:
+        #     video_name = id(texts) if video_name is None else video_name
+        voice_path = f"{self.config.output_dir}"
 
-            if not os.path.isdir(voice_path):
-                os.makedirs(voice_path)
+        if not os.path.isdir(voice_path):
+            os.makedirs(voice_path)
 
-            filepaths = [
-                self._create_voice_file_from_response(text,
-                                                      voice,
-                                                      f'{voice_path}/'
-                                                      f'{index}{self.config.file_format}')
-                for index, text in enumerate(texts)
-            ]
+        filepaths = [
+            self._create_voice_file_from_response(text,
+                                                  voice,
+                                                  f'{voice_path}/{text}')
+            for index, text in enumerate(texts)
+        ]
 
-            self.cache[cache_name] = filepaths
+        # self.cache[cache_name] = filepaths
 
-        return self.cache[cache_name]
+        return filepaths
 

@@ -8,7 +8,7 @@
     "CommentUrl": "https://reddit.com/{0}",
     "CommentLocator": "#thing_t1_{0}",
     "TitleLocator": "#thing_t3_{0}",
-    "NumberOfComments": 5,
+    "NumberOfComments": 1,
     "StringNotInComments": ["http"]
   },
   "BackgroundConfiguration": {

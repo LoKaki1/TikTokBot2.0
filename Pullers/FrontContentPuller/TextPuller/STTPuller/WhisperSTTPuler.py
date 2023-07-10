@@ -19,22 +19,29 @@ class WhisperSTTPuller(ISTTPuller):
         for segment in segments:
             words = segment['words']
 
-            for index in range(0, len(words), 2):
-                # if index >= len(words) - 2:
-                #     (start, end) = word['start'], word['end']
-                # else:
-                #     (start, end) = word['start'], words[index + 1]['end']
+            for word in words:
+                multiple_words +=
+                if len(word['word']) > 16:
+                    stt_model = STTModel(word['word'],
+                                         (start := word['start'] - (end := word['end'])),
+                                         start,
+                                         end)
+
                 new_words = words[index: index + 2]
                 (start, end) = new_words[0]['start'], new_words[-1]['end']
-
-                text = ' '.join([new_word['word'] for new_word in new_words])
-                stt_models.append(
-                    STTModel(
-                        text,
-                        end - start,
-                        start,
-                        end
-                    )
-                )
+            #
+            # for index in range(0, len(words), 2):
+            #     new_words = words[index: index + 2]
+            #     (start, end) = new_words[0]['start'], new_words[-1]['end']
+            #
+            #     text = ' '.join([new_word['word'] for new_word in new_words])
+            #     stt_models.append(
+            #         STTModel(
+            #             text,
+            #             end - start,
+            #             start,
+            #             end
+            #         )
+            #     )
 
         return stt_models
