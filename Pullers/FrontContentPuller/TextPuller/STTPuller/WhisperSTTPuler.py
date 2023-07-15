@@ -1,5 +1,6 @@
 from typing import List
 
+from Common.Factory.STTModelFactory.ISTTModelFactory import ISTTModelFactory
 from Common.LoggerCommon.Logger import logger_info_decorator
 from Common.Models.STTModel import STTModel
 from Pullers.FrontContentPuller.TextPuller.STTPuller.ISTTPuller import ISTTPuller
@@ -7,6 +8,8 @@ import whisper
 
 
 class WhisperSTTPuller(ISTTPuller):
+    def __init__(self, stt_model_factory: ISTTModelFactory):
+        self.stt_model_factory = stt_model_factory
 
     @logger_info_decorator
     def pull_text_from_audio(self, path: str) -> List[STTModel]:
@@ -18,30 +21,6 @@ class WhisperSTTPuller(ISTTPuller):
 
         for segment in segments:
             words = segment['words']
-
-            for word in words:
-                multiple_words +=
-                if len(word['word']) > 16:
-                    stt_model = STTModel(word['word'],
-                                         (start := word['start'] - (end := word['end'])),
-                                         start,
-                                         end)
-
-                new_words = words[index: index + 2]
-                (start, end) = new_words[0]['start'], new_words[-1]['end']
-            #
-            # for index in range(0, len(words), 2):
-            #     new_words = words[index: index + 2]
-            #     (start, end) = new_words[0]['start'], new_words[-1]['end']
-            #
-            #     text = ' '.join([new_word['word'] for new_word in new_words])
-            #     stt_models.append(
-            #         STTModel(
-            #             text,
-            #             end - start,
-            #             start,
-            #             end
-            #         )
-            #     )
+            stt_models += self.stt_model_factory.create_models_factory(words)
 
         return stt_models

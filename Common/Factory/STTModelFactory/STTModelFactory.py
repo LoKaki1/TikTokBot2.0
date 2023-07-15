@@ -1,3 +1,5 @@
+from typing import Union
+
 from Common.Factory.STTModelFactory.ISTTModelFactory import ISTTModelFactory
 from Common.Models.STTModel import STTModel
 
@@ -16,3 +18,13 @@ class STTModelFactory(ISTTModelFactory):
             stt_models.append(model)
 
         return stt_models
+
+    def create_models_factory(self, tts_models: list[dict[str, Union[str, float]]]) -> list[STTModel]:
+        return [
+            STTModel(model['word'],
+                     (end := model['end']) - (start := model['start']),
+                     start,
+                     end)
+            for model in tts_models
+        ]
+
