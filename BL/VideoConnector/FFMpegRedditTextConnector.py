@@ -53,4 +53,4 @@ class FFMpegRedditTextConnector(IVideoConnector):
         ffmpeg_base_images = self.draw_text.draw_text(text_models, ffmpeg_base_images)
         ffmpeg_base_images = ffmpeg.concat(ffmpeg_base_images, ffmpeg.input(path), v=1, a=1)
 
-        return ffmpeg_base_images.output(result_path,).run()
+        return ffmpeg_base_images.output(result_path, vcodec='h264_nvenc').run()

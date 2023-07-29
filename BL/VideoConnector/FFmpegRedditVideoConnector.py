@@ -42,4 +42,4 @@ class FFmpegRedditVideoConnector(IVideoConnector):
         ffmpeg_base_images = self.overlay_images.connect_image_voice(submission, ffmpeg_base)
         ffmpeg_base_images = ffmpeg.concat(ffmpeg_base_images[0], ffmpeg.input(path), v=1, a=1)
 
-        return ffmpeg_base_images.output(result_path,).run()
+        return ffmpeg_base_images.output(result_path, vcodec='h264_nvenc').run()
