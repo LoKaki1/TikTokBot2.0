@@ -12,11 +12,15 @@ class DrawText(IDrawText):
         for text_model in text_models:
             text = self.get_text(text_model).title()
             ffmpeg_base = ffmpeg_base.drawtext(text,
-                                               fontsize=80,
+
                                                fontcolor='#FFFFFF',
                                                fontfile=r'C:/WINDOWS/fonts/CascadiaCode.ttf',
                                                enable=f'between(t, {text_model.start_time}, {text_model.end_time})',
+                                               fontsize=f'if(lt(t-{text_model.start_time}, ({text_model.end_time} - t) / 2),50 * (1 +  2 * (t-{text_model.start_time})), 50 / (1  + 2 * (t-{text_model.start_time})))',
                                                x='(w-text_w)/2', y='(h-text_h)/2',
+                                               # x='if(lt(t-0.5,0),-text_w + ((w-text_w)/2 -(-text_w))*t/0.5,(w-text_w)/2)',
+                                               # x=f'-text_w + ((w-text_w)/2 -(-text_w))*(t-{text_model.start_time})/0.5',
+                                               # y='(h-text_h)-10',
                                                shadowcolor='#000000',
                                                shadowx=5,
                                                shadowy=5
