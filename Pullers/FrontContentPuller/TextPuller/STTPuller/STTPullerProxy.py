@@ -24,6 +24,9 @@ class STTPullerProxy(ISTTPuller):
                 new.append(last)
                 last = current
 
+        if last not in new:
+            new.append(last)
+
         return new
         # new_models = []
         # index = 0

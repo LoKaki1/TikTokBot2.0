@@ -13,6 +13,7 @@ from Configurations.Configuration import Configuration
 from Pullers.BackgroundPuller.VideoBackgroundPuller import VideoBackgroundPuller
 from Pullers.FrontContentPuller.TextPuller.STTPuller.STTPullerProxy import STTPullerProxy
 from Pullers.FrontContentPuller.TextPuller.STTPuller.WhisperSTTPuler import WhisperSTTPuller
+from Pullers.VideoDonwloaderPuller.YoutubeVideoDownloaderPuller import YoutubeVideoDownloaderPuller
 
 
 class FFmpegAndrewTateBotCreator(BotFactoryBase):
@@ -24,10 +25,16 @@ class FFmpegAndrewTateBotCreator(BotFactoryBase):
         stt_model_factory = STTModelFactory()
         text_puller = WhisperSTTPuller(stt_model_factory)
         text_puller = STTPullerProxy(text_puller)
-        background_puller = VideoBackgroundPuller(self.config.background_configuration)
+        downloader_puller = YoutubeVideoDownloaderPuller(self.config.background_configuration)
+        background_puller = VideoBackgroundPuller(self.config.background_configuration, downloader_puller)
         background_creator = FFmpegBackgroundCreator(background_puller, self.config.video_connector_configuration)
         draw_text = DrawText()
         draw_text_creator = DrawTextCreator(text_puller, draw_text)
-        text_video_connector = FFmpegVideoConnector(background_puller, background_creator, self.config.video_connector_configuration, draw_text_creator)
+
+        text_video_connector = FFmpegVideoConnector(background_puller,
+                                                    background_creator,
+                                                    self.config.video_connector_configuration,
+                                                    draw_text_creator,
+                                                    downloader_puller)
 
         return text_video_connector

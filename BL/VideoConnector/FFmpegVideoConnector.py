@@ -7,6 +7,7 @@ from BL.VideoParts.FrontCreator.FFMpegFrontCreator.FFMpegTextCreator.DrawTextCre
 from Common.VoiceCommon import VoiceCommon
 from Configurations.VideoConnectorConfiguration.VideoConnectorConfiguration import VideoConnectorConfiguration
 from Pullers.BackgroundPuller.IBackgroundPuller import IBackgroundPuller
+from Pullers.VideoDonwloaderPuller.IVideoDownloaderPuller import IVideoDownloaderPuller
 
 
 class FFmpegVideoConnector(IVideoConnector):
@@ -15,15 +16,18 @@ class FFmpegVideoConnector(IVideoConnector):
                  background_puller: IBackgroundPuller,
                  background_creator: IBackgroundCreator,
                  video_connector_config: VideoConnectorConfiguration,
-                 draw_text_creator: DrawTextCreator
+                 draw_text_creator: DrawTextCreator,
+                 video_downloader: IVideoDownloaderPuller
                  ):
+        self.video_downloader = video_downloader
         self.draw_text_creator = draw_text_creator
         self.background_creator = background_creator
         self.config = video_connector_config
         self.background_puller = background_puller
 
     def connect_video(self, voice: str, background: str):
-        text_voice_video = self.background_puller.pull_background(voice, None)
+        text_voice_video = self.video_downloader.download_video(voice)
+        text_voice_video = self.background_puller.chop_video(text_voice_video, )
         (composite, _) = VoiceCommon.composite_voice_from_audio_files([text_voice_video])
         ffmpeg_base = self.background_creator.create_background(background, int(composite.duration)).background_data
         ffmpeg_base = self.draw_text_creator.create_voice(text_voice_video, ffmpeg_base)

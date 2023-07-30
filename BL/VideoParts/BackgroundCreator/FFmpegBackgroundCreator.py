@@ -17,7 +17,6 @@ class FFmpegBackgroundCreator(IBackgroundCreator):
 
     def create_background(self, background_name: str, video_length: int) -> BackgroundModel:
         background_path = self.background_puller.pull_background(background_name, video_length)
-        video_meta_data = self.background_puller.get_video_meta_data(background_name)
 
         background_result = ffmpeg.input(background_path)
         c = self.config.width // 2

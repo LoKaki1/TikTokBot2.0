@@ -14,6 +14,7 @@ from Pullers.BackgroundPuller.VideoBackgroundPuller import VideoBackgroundPuller
 from Pullers.FrontContentPuller.ImagePuller.WebImagePuller import WebImagePuller
 from Pullers.FrontContentPuller.MetaDataPuller.CommentPuller.ReddictCommentPuller import RedditCommentPuller
 from Pullers.FrontContentPuller.MetaDataPuller.RedditPuller.SubmissionPuller import SubmissionPuller
+from Pullers.VideoDonwloaderPuller.YoutubeVideoDownloaderPuller import YoutubeVideoDownloaderPuller
 from Pullers.VoicePuller.CustomVoicePuller import CustomVoicePuller
 
 
@@ -35,11 +36,11 @@ class RedditCommentBackgroundFactory(BotFactoryBase):
         image_web_puller_model_factory = ImageWebPullerModelFactory(self.reddit_configuration)
 
         # Creating Pullers
-
-        background_puller = VideoBackgroundPuller(self.background_configuration)
+        downloader_puller = YoutubeVideoDownloaderPuller(self.config.background_configuration)
+        background_puller = VideoBackgroundPuller(self.background_configuration, downloader_puller)
         image_puller = WebImagePuller(self.image_puller_configuration)
         submission_puller = SubmissionPuller(reddit_praw)
-        comment_puller = RedditCommentPuller(self.reddit_configuration)
+        comment_puller = RedditCommentPuller(self.reddit_configuration, self.reddit_configuration.number_of_comments)
         voice_puller = CustomVoicePuller(self.voice_configuration)
 
         # Creating Creators

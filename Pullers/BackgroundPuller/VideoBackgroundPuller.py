@@ -10,11 +10,15 @@ from Common.LoggerCommon.Logger import logger_info_decorator
 from Common.RegularCommon import RegularCommon
 from Configurations.BackgroundConfiguration.BackgroundConfiguration import BackgroundConfiguration
 from Pullers.BackgroundPuller.IBackgroundPuller import IBackgroundPuller
+from Pullers.VideoDonwloaderPuller.IVideoDownloaderPuller import IVideoDownloaderPuller
 
 
 class VideoBackgroundPuller(IBackgroundPuller):
 
-    def __init__(self, config: BackgroundConfiguration):
+    def __init__(self,
+                 config: BackgroundConfiguration,
+                 video_downloader_puller: IVideoDownloaderPuller):
+        self.video_downloader_puller = video_downloader_puller
         self.config = config
         self.meta_data = {}
 
@@ -23,8 +27,9 @@ class VideoBackgroundPuller(IBackgroundPuller):
         """
         :return:
         """
-        background_video_path = self._download_background(video_name)
-        chopped_video = self._chop_background_video(background_video_path, video_name, video_length)
+        background_url = self.config.background_type[video_name]
+        background_video_path = self.video_downloader_puller.download_video(background_url)
+        chopped_video = self.chop_video(background_video_path, video_length)
 
         return chopped_video
 
@@ -45,16 +50,15 @@ class VideoBackgroundPuller(IBackgroundPuller):
 
         return background_path
 
-    def _chop_background_video(self,
-                               background_path: str,
-                               background_name: str,
-                               length: int = None
-                               ) -> str:
-        video_meta_data = VideoFileClip(background_path)
+    def chop_video(self,
+                   video_path: str,
+                   length: int = None
+                   ) -> str:
+        video_meta_data = VideoFileClip(video_path)
 
         video_duration = int(video_meta_data.duration)
         start_time, end_time = RegularCommon.generate_video_start_end(video_duration, length)
-
+        background_name = RegularCommon.get_name_from_path(video_path)
         chopped_video_path = f'{self.config.chopped_video_folder}/{background_name}{self.config.background_format}'
 
         if not path.exists(self.config.chopped_video_folder):
@@ -62,7 +66,7 @@ class VideoBackgroundPuller(IBackgroundPuller):
 
         try:
             ffmpeg_extract_subclip(
-                background_path,
+                video_path,
                 start_time,
                 end_time,
                 targetname=chopped_video_path
@@ -70,7 +74,7 @@ class VideoBackgroundPuller(IBackgroundPuller):
 
         except (OSError, IOError):  # ffmpeg issue see #348
 
-            with VideoFileClip(background_path) as video:
+            with VideoFileClip(video_path) as video:
                 new = video.subclip(start_time, end_time)
                 new.write_videofile(chopped_video_path)
 

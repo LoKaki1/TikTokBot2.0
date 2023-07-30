@@ -17,6 +17,9 @@ from Pullers.BackgroundPuller.VideoBackgroundPuller import VideoBackgroundPuller
 from Pullers.FrontContentPuller.ImagePuller.WebImagePuller import WebImagePuller
 from Pullers.FrontContentPuller.MetaDataPuller.CommentPuller.ReddictCommentPuller import RedditCommentPuller
 from Pullers.FrontContentPuller.MetaDataPuller.RedditPuller.SubmissionPuller import SubmissionPuller
+from Pullers.FrontContentPuller.TextPuller.STTPuller.STTPullerProxy import STTPullerProxy
+from Pullers.FrontContentPuller.TextPuller.STTPuller.WhisperSTTPuler import WhisperSTTPuller
+from Pullers.VideoDonwloaderPuller.YoutubeVideoDownloaderPuller import YoutubeVideoDownloaderPuller
 from Pullers.VoicePuller.CustomVoicePuller import CustomVoicePuller
 
 
@@ -35,8 +38,8 @@ class FFmpegRedditFactory(BotFactoryBase):
         image_web_puller_model_factory = ImageWebPullerModelFactory(self.reddit_configuration)
 
         # Creating Pullers
-
-        background_puller = VideoBackgroundPuller(self.background_configuration)
+        downloader_puller = YoutubeVideoDownloaderPuller(self.config.background_configuration)
+        background_puller = VideoBackgroundPuller(self.background_configuration, downloader_puller)
         image_puller = WebImagePuller(self.image_puller_configuration)
         submission_puller = SubmissionPuller(reddit_praw)
         comment_puller = RedditCommentPuller(self.reddit_configuration, 0)
@@ -55,6 +58,8 @@ class FFmpegRedditFactory(BotFactoryBase):
                                        image_text_factory)
         draw_text = DrawText()
         stt_model_factory = STTModelFactory()
+        stt_puller = WhisperSTTPuller(stt_model_factory)
+        stt_puller = STTPullerProxy(stt_puller)
 
         return FFMpegRedditTextConnector(background_creator,
                                          self.video_connector_configuration,
@@ -64,5 +69,5 @@ class FFmpegRedditFactory(BotFactoryBase):
                                          voice_puller,
                                          self.voice_configuration,
                                          draw_text,
-                                         stt_model_factory
-                                         )
+                                         stt_model_factory,
+                                         stt_puller)

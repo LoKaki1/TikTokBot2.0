@@ -12,3 +12,10 @@ class IBackgroundPuller:
         :param video:
         :return:
         """
+
+    def chop_video(self, video_path: str, video_length: int = None) -> str:
+        """
+        :param video_path:
+        :param video_length:
+        :return:
+        """
