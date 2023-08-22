@@ -1,5 +1,7 @@
 from typing import List
 
+import torch.cuda
+
 from Common.Factory.STTModelFactory.ISTTModelFactory import ISTTModelFactory
 from Common.LoggerCommon.Logger import logger_info_decorator
 from Common.Models.STTModel import STTModel
@@ -13,7 +15,8 @@ class WhisperSTTPuller(ISTTPuller):
 
     @logger_info_decorator
     def pull_text_from_audio(self, path: str) -> List[STTModel]:
-        model = whisper.load_model("base", device='cuda')
+        device = 'cuda' if torch.cuda.is_available() else None
+        model = whisper.load_model("base", device=device)
         result = model.transcribe(path, word_timestamps=True)
 
         segments = result['segments'][0:len(result['segments'])]
