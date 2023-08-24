@@ -1,4 +1,4 @@
-from tensorboard.plugins.text.summary_v2 import text_pb
+import math
 
 from BL.VideoParts.FrontCreator.FFMpegFrontCreator.FFMpegTextCreator.DrawText.IDrawText import IDrawText
 from Common.Models.STTModel import STTModel
@@ -17,8 +17,8 @@ def calc_parabola_vertex(x1, y1, x2, y2, x3, y3):
     return round(A), round(B), round(C)
 
 
-base_size = 30
-max_size = 60
+base_size = 70
+max_size = 90
 
 class DrawText(IDrawText):
 
@@ -34,8 +34,15 @@ class DrawText(IDrawText):
             x2, y2 = (text_model.duration / 2, max_size)
             x3, y3 = (text_model.duration, base_size)
             a, b, c = calc_parabola_vertex(x1, y1, x2, y2, x3, y3)
+            sq = round(math.sqrt(abs(a)), 2)
 
-            print(f'{a} * (t - {text_model.start_time}) * (t - {text_model.start_time}) + {b} * (t - {text_model.start_time}) + {c}')
+            # print(f'{a} * (t - {text_model.start_time}) * (t - {text_model.start_time}) + {b} * (t - {text_model.start_time}) + {c}')
+            # st = f'{a}*t*t-{text_model.start_time }*{2*a}*t-{round(abs((text_model.start_time**2)*a), 2)}+{c}+{b}*t-{round(b*text_model.start_time, 2)}'
+            # st = f'{a}*t^2+{b}*t+{c}-{round(abs(2 * a * text_model.start_time), 2)}*t-{abs(a * text_model.start_time ** 2 -b*text_model.start_time)}'
+            # st = f'{a}*t^2+{2 * a * (-text_model.start_time) + b}*t+{abs(c + a * text_model.start_time ** 2 - b * text_model.start_time)}'
+            st = f'{a}*t^2+t*{(-2 * text_model.start_time * a + b)}{"+" if a * text_model.start_time ** 2 - b * text_model.start_time + c > 0 else "-"}{round(abs(a * text_model.start_time ** 2 - b * text_model.start_time + c), 2)}'
+            print(st)
+
             ffmpeg_base = ffmpeg_base.drawtext(text,
                                                fontcolor='#FFFFFF',
                                                fontfile=r'C:/WINDOWS/fonts/CascadiaCode.ttf',
@@ -45,8 +52,10 @@ class DrawText(IDrawText):
                                                # fontsize=f'(t - {text_model.start_time}) ^ 3 - 2 * (t - {text_model.start_time}) + 220',
                                                # fontsize=f'round(-({duration_multiplication} * (t - {text_model.start_time})) * ({duration_multiplication} * (t - {text_model.start_time})) * ({duration_multiplication} * (t - {text_model.start_time})) + 12 * ({duration_multiplication} * (t - {text_model.start_time})) * ({duration_multiplication} * (t - {text_model.start_time})) + 10 * ({duration_multiplication} * (t - {text_model.start_time})) + 30)',
 
-                                               # fontsize=f'{a} * (t - {text_model.start_time})*(t - {text_model.start_time})  + {b}*(t - {text_model.start_time}) + {c}',
-                                               fontsize=f'{a}*(t - {text_model.start_time})*(t - {text_model.start_time}) + {b}*(t - {text_model.start_time}) + {c}',
+                                               # fontsize=f'{a}*(t-{text_model.start_time})^2+{b}*(t-{text_model.start_time})+{c}',
+                                               # fontsize=f'{a}*t*t + {b}*t + {c}',
+                                               # fontsize=f'{a} * t^2-{abs(2*a*text_model.start_time)}*t-{abs((text_model.start_time**2) * a)}+{b}*t-{b*text_model.start_time}+{c}',
+                                               fontsize=f'{st}',
                                                x='(w-text_w)/2', y='(h-text_h)/2',
                                                # x='if(lt(t-0.5,0),-text_w + ((w-text_w)/2 -(-text_w))*t/0.5,(w-text_w)/2)',
                                                # x=f'-text_w + ((w-text_w)/2 -(-text_w))*(t-{text_model.start_time})/0.5',
@@ -79,3 +88,7 @@ class DrawText(IDrawText):
     #     if big_word not in data:
     #         data.append(big_word)
     #     return '\n'.join(data)
+# a * (t - model) ^ 2 + b * (t - model) + c
+# a * (t ^ 2- 2 * t * model + model ^ 2) + b * t - b * model + c
+# a * t ^ 2 - 2 * t * model * a + a * model ^ 2 + b * t - b * model + c
+# a * t ^ 2 + t * (-2 * model * a + b) + (a * model ^ 2 - b * model + c)

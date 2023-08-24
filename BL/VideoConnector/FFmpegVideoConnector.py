@@ -26,8 +26,8 @@ class FFmpegVideoConnector(IVideoConnector):
         self.background_puller = background_puller
 
     def connect_video(self, voice: str, background: str):
-        text_voice_video = self.video_downloader.download_video(voice)
-        text_voice_video = self.background_puller.chop_video(text_voice_video, 15)
+        text_voice_video = self.video_downloader.download_video(voice, )
+        text_voice_video = self.background_puller.chop_video(text_voice_video, )
         (composite, _) = VoiceCommon.composite_voice_from_audio_files([text_voice_video])
         ffmpeg_base = self.background_creator.create_background(background, int(composite.duration)).background_data
         print(text_voice_video)
@@ -36,4 +36,4 @@ class FFmpegVideoConnector(IVideoConnector):
         result_path = f"{self.config.result_path}{id(voice)}{self.config.file_format}"
         ffmpeg_result = ffmpeg.concat(ffmpeg_base, audio, v=1, a=1)
 
-        return ffmpeg_result.output(result_path).run()
+        return ffmpeg_result.output(result_path, vcodec='h264_nvenc').run()
