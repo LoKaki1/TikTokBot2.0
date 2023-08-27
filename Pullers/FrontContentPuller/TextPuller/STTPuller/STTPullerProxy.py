@@ -18,7 +18,7 @@ class STTPullerProxy(ISTTPuller):
         for index, model in enumerate(stt_models):
             current = stt_models[index]
 
-            if len(last + current) < 16:
+            if len(last + current) < 11:
                 last += current
             else:
                 new.append(last)

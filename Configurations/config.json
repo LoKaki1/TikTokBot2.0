@@ -44,7 +44,8 @@
     "AudioCodec": "aac",
     "AudioBitrate": "192k",
     "FadeIn": 0.1,
-    "FadeOut": 0.2
+    "FadeOut": 0.2,
+    "FfmpegFilesDir": "./assets/ffmpeg_files"
   },
   "ImagePullerConfiguration": {
      "Timeout": 100000

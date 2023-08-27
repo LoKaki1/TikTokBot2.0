@@ -8,6 +8,7 @@ from BL.VideoParts.FrontCreator.FFMpegFrontCreator.FFMpegTextCreator.DrawText.Dr
 from BL.VideoParts.FrontCreator.FFMpegFrontCreator.FFMpegTextCreator.DrawTextCreator import DrawTextCreator
 from BL.VideoParts.FrontCreator.TextCreator.TextCreator import TextCreator
 from BL.VideoParts.FrontCreator.TextCreatorManager.TextCreatorManager import TextCreatorManager
+from Common.FFmpegExtensions.FFmpegRender.FFmpegRender import FFmpegRender
 from Common.Factory.STTModelFactory.STTModelFactory import STTModelFactory
 from Configurations.Configuration import Configuration
 from Pullers.BackgroundPuller.VideoBackgroundPuller import VideoBackgroundPuller
@@ -30,11 +31,12 @@ class FFmpegAndrewTateBotCreator(BotFactoryBase):
         background_creator = FFmpegBackgroundCreator(background_puller, self.config.video_connector_configuration)
         draw_text = DrawText()
         draw_text_creator = DrawTextCreator(text_puller, draw_text)
-
+        ffmpeg_render = FFmpegRender(self.config.video_connector_configuration)
         text_video_connector = FFmpegVideoConnector(background_puller,
                                                     background_creator,
                                                     self.config.video_connector_configuration,
                                                     draw_text_creator,
-                                                    downloader_puller)
+                                                    downloader_puller,
+                                                    ffmpeg_render)
 
         return text_video_connector

@@ -15,3 +15,4 @@ class VideoConnectorConfiguration:
     fade_in: float
     fade_out: float
     file_format: str
+    ffmpeg_files_dir: str
