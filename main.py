@@ -22,7 +22,7 @@ config = load_configuration("./Configurations/config.json")
 # video_connector.connect_video(voice='short', background='minecraft')
 video_connector_factory = FFmpegAndrewTateBotCreator(config)
 ffmpeg_bot = video_connector_factory.create_bot()
-ffmpeg_bot.connect_video(voice='https://www.youtube.com/shorts/QGV_60Fr5_8', background='minecraft')
+ffmpeg_bot.connect_video(voice='https://youtube.com/shorts/kvxyUnMewMk?si=z0PsGvx_3sztkF6U', background='minecraft')
 # video_connector_factory = FFmpegRedditFactory(config)
 # creator = video_connector_factory.create_bot()
 # creator.connect_video(submission="153omao",
