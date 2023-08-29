@@ -24,7 +24,7 @@ def create_video():
         paths.append(path)
 
     return {
-        "path":paths
+        "paths": paths
     }
 
 
