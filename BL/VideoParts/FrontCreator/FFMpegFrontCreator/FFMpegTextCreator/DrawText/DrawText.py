@@ -39,5 +39,5 @@ class DrawText(IDrawText):
         return ffmpeg_base
 
     def get_text(self, text_model: STTModel) -> str:
-        return "".join(c for c in text_model.text if c.isalpha() or c == ' ')
+        return "".join(c for c in text_model.text if c.isdigit() or c.isalpha() or  c == ' ' or c =='%' or c == '$' or c == '@')
 

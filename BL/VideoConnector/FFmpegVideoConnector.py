@@ -30,32 +30,17 @@ class FFmpegVideoConnector(IVideoConnector):
         self.config = video_connector_config
         self.background_puller = background_puller
 
-    def connect_video(self, voice: str, background: str):
+    def connect_video(self, voice: str, background: str, use_voice_as_background: bool = False):
+
         text_voice_video = self.video_downloader.download_video(voice, )
         text_voice_video = self.background_puller.chop_video(text_voice_video, )
         (composite, _) = VoiceCommon.composite_voice_from_audio_files([text_voice_video])
-        ffmpeg_base = self.background_creator.create_background(background, int(composite.duration)).background_data
+        if use_voice_as_background:
+            ffmpeg_base = self.background_creator.create_background(text_voice_video, None).background_data
+        else:
+            ffmpeg_base = self.background_creator.create_background(background, int(composite.duration)).background_data
         ffmpeg_base = self.draw_text_creator.create_voice(text_voice_video, ffmpeg_base)
         audio = ffmpeg.input(text_voice_video)
         ffmpeg_result = ffmpeg.concat(ffmpeg_base, audio, v=1, a=1)
 
         return self.ffmpeg_render.render_ffmpeg_output(ffmpeg_result)
-        # result_path = f"{self.config.result_path}{id(voice)}{self.config.file_format}"
-        # output = ffmpeg_result.output(result_path, vcodec='h264_nvenc')
-        #
-        # compiled = output.compile()
-        # # return output.run()
-        # filter_complex = compiled.index('-filter_complex')
-        # all_of_filters = compiled[filter_complex + 1]
-        # script_file = f'./assets/ffmpeg_files/{id(voice)}'
-        # with open(script_file, 'w') as file:
-        #     file.write(all_of_filters)
-        #
-        # compiled_copy = compiled.copy()
-        # compiled_copy[filter_complex] = '-filter_complex_script'
-        # compiled_copy[filter_complex + 1] = script_file
-        #
-        # return subprocess.Popen(compiled_copy, stdin=None,
-        #                         stdout=None,
-        #                         stderr=None,
-        #                         cwd=None, )

@@ -49,5 +49,9 @@
   },
   "ImagePullerConfiguration": {
      "Timeout": 100000
+  },
+  "SttConfiguration": {
+    "WhisperModelFolder": "./assets/models"
   }
+
 }

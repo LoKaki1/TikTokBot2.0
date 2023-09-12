@@ -4,6 +4,7 @@ from dataclasses_json import dataclass_json, LetterCase
 from Configurations.BackgroundConfiguration.BackgroundConfiguration import BackgroundConfiguration
 from Configurations.ImagePullerConfiguration.ImagePullerConfiguration import ImagePullerConfiguration
 from Configurations.RedditConfiguration.RedditConfiguration import RedditConfiguration
+from Configurations.SttConfiguration.SttConfiguration import SttConfiguration
 from Configurations.VideoConnectorConfiguration.VideoConnectorConfiguration import VideoConnectorConfiguration
 from Configurations.VoiceConfiguration.VoiceConfiguration import VoiceConfiguration
 
@@ -16,3 +17,4 @@ class Configuration:
     voice_configuration: VoiceConfiguration
     video_connector_configuration: VideoConnectorConfiguration
     image_puller_configuration: ImagePullerConfiguration
+    stt_configuration: SttConfiguration

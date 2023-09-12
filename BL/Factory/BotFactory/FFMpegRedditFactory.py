@@ -58,7 +58,7 @@ class FFmpegRedditFactory(BotFactoryBase):
                                        image_text_factory)
         draw_text = DrawText()
         stt_model_factory = STTModelFactory()
-        stt_puller = WhisperSTTPuller(stt_model_factory)
+        stt_puller = WhisperSTTPuller(self.config.stt_configuration, stt_model_factory)
         stt_puller = STTPullerProxy(stt_puller)
 
         return FFMpegRedditTextConnector(background_creator,

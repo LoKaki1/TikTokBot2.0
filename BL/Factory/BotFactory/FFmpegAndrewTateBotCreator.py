@@ -24,7 +24,7 @@ class FFmpegAndrewTateBotCreator(BotFactoryBase):
 
     def create_bot(self,) -> IVideoConnector:
         stt_model_factory = STTModelFactory()
-        text_puller = WhisperSTTPuller(stt_model_factory)
+        text_puller = WhisperSTTPuller(self.config.stt_configuration, stt_model_factory)
         text_puller = STTPullerProxy(text_puller)
         downloader_puller = YoutubeVideoDownloaderPuller(self.config.background_configuration)
         background_puller = VideoBackgroundPuller(self.config.background_configuration, downloader_puller)

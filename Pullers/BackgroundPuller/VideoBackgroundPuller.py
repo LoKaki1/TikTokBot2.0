@@ -27,8 +27,12 @@ class VideoBackgroundPuller(IBackgroundPuller):
         """
         :return:
         """
-        background_url = self.config.background_type[video_name]
-        background_video_path = self.video_downloader_puller.download_video(background_url)
+        if video_name in self.config.background_type:
+            background_url = self.config.background_type[video_name]
+            background_video_path = self.video_downloader_puller.download_video(background_url)
+        else:
+            background_video_path = video_name
+
         chopped_video = self.chop_video(background_video_path, video_length)
 
         return chopped_video

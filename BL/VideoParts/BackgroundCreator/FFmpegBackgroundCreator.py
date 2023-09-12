@@ -15,7 +15,7 @@ class FFmpegBackgroundCreator(IBackgroundCreator):
         self.background_puller = background_puller
         self.config = config
 
-    def create_background(self, background_name: str, video_length: int) -> BackgroundModel:
+    def create_background(self, background_name: str, video_length: int = None) -> BackgroundModel:
         background_path = self.background_puller.pull_background(background_name, video_length)
 
         background_result = ffmpeg.input(background_path)
