@@ -16,7 +16,7 @@ class YoutubeVideoDownloaderPuller(IVideoDownloaderPuller):
 
     def download_video(self, url: str) -> str:
         background = split_youtube_url(url)
-        background_path = f"{self.config.background_folder}{id(background)}{self.config.background_format}"
+        background_path = f"{self.config.background_folder}{background}{self.config.background_format}"
 
         if not path.exists(self.config.background_folder):
             os.makedirs(self.config.background_folder)
@@ -28,6 +28,6 @@ class YoutubeVideoDownloaderPuller(IVideoDownloaderPuller):
                               allow_oauth_cache=True)
 
             streams = youtube.streams.get_highest_resolution()
-            background_path = streams.download(self.config.background_folder, filename=f"{id(background)}{self.config.background_format}")
+            background_path = streams.download(self.config.background_folder, filename=f"{background}{self.config.background_format}")
 
         return background_path

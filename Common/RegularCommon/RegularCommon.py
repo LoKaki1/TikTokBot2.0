@@ -1,3 +1,4 @@
+import re
 from random import randrange
 from typing import Callable, Any, Tuple
 import torch.cuda
@@ -31,7 +32,7 @@ def split_youtube_url(url: str) -> str:
     else:
         video_name = url.split('watch?v=')[-1]
 
-    return video_name.replace('/', '')
+    return re.sub('[\W_]+', '', video_name)
 
 
 def calc_parabola_vertex(x1, y1, x2, y2, x3, y3):
